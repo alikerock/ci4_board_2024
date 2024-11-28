@@ -1,10 +1,6 @@
 <?php
 namespace App\Controllers;
 use App\Models\BoardModel;
-use CodeIgniter\HTTP\IncomingRequest;
-use CodeIgniter\HTTP\RedirectResponse;
-
-$request = service('request');
 
 class Board extends BaseController
 {
@@ -36,21 +32,32 @@ class Board extends BaseController
  
         return render('board_view',$data);        
     }
-    public function write(): string
+    public function write()
     {
+        if(!isset($_SESSION['userid'])){
+            return redirect()->to('/login')->with('alert', '로그인해주세요');
+        }    
         // return view('board_write');
         return render('board_write');
     }
-    public function save():  RedirectResponse | string
+    public function save()
     {
-        // $request = service('request');
+        /*
         $db = db_connect();
-        $subject = $this->request->getVar('subject');
-        $content = $this->request->getVar('content');
+        $subject=$this->request->getVar('subject');
+        $content=$this->request->getVar('content');
 
-        $sql = "INSERT INTO board (userid, subject, content) VALUES('hong','$subject', '$content')";
-        $result = $db->query($sql);       
-        // return redirect()->to('/board'); 
-        return redirect()->to(site_url('/board'));
-    }
+        $sql="insert into board (userid,subject,content) values ('test','$subject','$content')";
+        $rs = $db->query($sql);        
+        */
+        $boardModel = new BoardModel();
+
+        $data = [
+            'userid' => 'admin',
+            'subject'    => $this->request->getVar('subject'),
+            'content'    => $this->request->getVar('content')
+        ];
+        $boardModel->insert($data);
+        return $this->response->redirect(site_url('/board'));
+    } 
 }
