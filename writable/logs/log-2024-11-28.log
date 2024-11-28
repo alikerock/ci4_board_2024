@@ -1,0 +1,16 @@
+CRITICAL - 2024-11-28 01:07:47 --> ErrorException: Attempt to read property "subject" on array
+[Method: GET, Route: boardView/1]
+in APPPATH\Views\board_view.php on line 4.
+ 1 APPPATH\Views\board_view.php(4): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "subject" on array', 'E:\\KDT\\CI4_BOARD\\app\\Views\\board_view.php', 4)
+ 2 SYSTEMPATH\View\View.php(234): include('E:\\KDT\\CI4_BOARD\\app\\Views\\board_view.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('board_view', [], true)
+ 5 APPPATH\Helpers\render_helper.php(8): view('board_view', [...], [])
+ 6 APPPATH\Controllers\Board.php(30): render('board_view', [...])
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Board->view('1')
+ 8 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Board))
+ 9 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(57): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('E:\\KDT\\CI4_BOARD\\public\\index.php')
