@@ -11,6 +11,6 @@ class BoardModel extends Model
   protected $useAutoIncrement = true;
   protected $returnType     = 'object';
   protected $allowedFields = [
-    'userid', 'subject', 'regdate'
+    'userid', 'subject', 'content','regdate'
   ];
 }
