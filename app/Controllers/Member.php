@@ -25,7 +25,7 @@ class Member extends BaseController
             $user = $rs->getRow();
             $data = [
                 'userid' => $user->userid,
-                'userid' => $user->username,
+                'username' => $user->username,
                 'email' => $user->email,
             ];
             
