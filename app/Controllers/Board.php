@@ -44,7 +44,7 @@ class Board extends BaseController
         $subject=$this->request->getVar('subject');
         $content=$this->request->getVar('content');
 
-        $sql="insert into board (userid,subject,content) values ('test','".$subject."','".$content."')";
+        $sql="insert into board (userid,subject,content) values ('test','$subject','$content)";
         $rs = $db->query($sql);
         return $this->response->redirect(site_url('/board'));
     }  
