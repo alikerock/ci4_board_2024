@@ -10,7 +10,8 @@ class Member extends BaseController
     } 
     public function logout() 
     {
-
+        $this->session->destroy();
+        return redirect()->to('/board');
     } 
     public function loginok() 
     {
@@ -20,8 +21,18 @@ class Member extends BaseController
 
         $sql="SELECT * FROM members WHERE userid=? AND passwd = ?";
         $rs = $db->query($sql, [$userid, $passwd]);
-        if($rs->getResultID()->num_rows > 0) {
+        if($rs->getNumRows() > 0) {
+            $user = $rs->getRow();
+            $data = [
+                'userid' => $user->userid,
+                'userid' => $user->username,
+                'email' => $user->email,
+            ];
             
+            $this->session->set($data);
+            return redirect()->to('/board');
+        } else{
+            return redirect()->to('/login');
         }
     } 
 }
