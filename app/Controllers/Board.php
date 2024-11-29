@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\BoardModel;
+use App\Models\FileModel;
 
 class Board extends BaseController
 {
@@ -71,6 +72,7 @@ class Board extends BaseController
     public function save()
     {
         $boardModel = new BoardModel();
+        $fileModel = new FileModel();
 
         $data = [
             // 'userid' => 'admin',
@@ -79,6 +81,15 @@ class Board extends BaseController
             'content'    => $this->request->getVar('content')
         ];
         $bid = $this->request->getVar('bid');
+        $file = $this->request->getFile('upfile');
+
+        $db = db_connect();
+
+        if($file->getName()) { //첨부파일이 있으면
+            $filename = $file->getName(); //파일명
+            $newName = $file->getRandomName();//서버에 저장할 파일명 생성
+            $filePath = $file->store('board/',$newName);
+        }
 
         if($bid){ //기존글 수정
             $post = $boardModel->find($bid);
@@ -92,6 +103,17 @@ class Board extends BaseController
 
         }else{ //새글 입력
             $boardModel->insert($data);
+            $insertId = $db->insertID(); //board 테이블에 새글 입력시 자동으로 생성되는 bid
+
+            $fileData = [
+                // 'userid' => 'admin',
+                'bid' => $insertId,
+                'userid' => $_SESSION['userid'],
+                'filename'    => $filePath,
+                'type'    => 'board'
+            ];
+            $fileModel->insert($fileData);
+
             return $this->response->redirect(site_url('/board'));
         }
 
