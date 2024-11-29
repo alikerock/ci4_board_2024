@@ -2,6 +2,8 @@
 namespace App\Controllers;
 use App\Models\BoardModel;
 use App\Models\FileModel;
+use CodeIgniter\Pager\Pager;
+
 
 class Board extends BaseController
 {
@@ -14,7 +16,31 @@ class Board extends BaseController
         $data['list'] = $result->getResult();//조회결과를 data에 할당
         */
         $boardModel = new BoardModel();
-        $data['list'] = $boardModel->orderBy('bid', 'desc')->findAll();
+        $page = $this->request->getVar('page') ?? 1;
+        $perPage = 10;
+        $startLimit = ($page -1) * $perPage;
+
+        $query = $boardModel->select('board.*')
+            ->where('1=1')
+            ->orderBy('bid','desc')
+            ->limt($perpage, startLimit)
+            ->findAll($perpage, startLimit);
+
+        $total = $boardModel->countAllResults(); //전체 게시글 수
+
+        $pager = service('pager'); //페이지네이션 초기화
+
+        $pager_links = $pager->makeLinks($page, $perPage, $total);
+
+        $data = [
+            // ...
+            'pager_links' => $pager_links,
+        ];
+        //$data['pager_links'] = $pager_links;
+
+
+
+       // $data['list'] = $boardModel->orderBy('bid', 'desc')->findAll();
 
         // return view('board_list');
         return render('board_list',$data);        
