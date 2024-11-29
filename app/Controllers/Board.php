@@ -20,16 +20,20 @@ class Board extends BaseController
         return render('board_list',$data);        
     }
     public function view($bid=null): string
-    {
-  
-        /*
-        $db = db_connect();
-        $sql = "SELECT * FROM board WHERE bid=$bid";
-        $result = $db->query($sql);        
-        $data['view'] = $result->getRow();//조회결과를 data에 할당
-        */
+    { 
         $boardModel = new BoardModel();
+        $fileModel = new FileModel();
+
+        /*
         $data['view'] = $boardModel->where('bid', $bid)->first();
+
+        $data['file_view'] = $fileModel->where('type', 'board')->where('bid', $bid)->first();
+        */
+        $data['view'] = $boardModel->select('b.*,f.filename')
+                                ->from('board b')
+                                ->join('file_table f', 'f.bid=b.bid', 'left')
+                                ->where('b.bid',$bid)
+                                ->first();
  
         return render('board_view',$data);        
     }
@@ -86,7 +90,7 @@ class Board extends BaseController
         $db = db_connect();
 
         if($file->getName()) { //첨부파일이 있으면
-            $filename = $file->getName(); //파일명
+            // $filename = $file->getName(); //파일명
             $newName = $file->getRandomName();//서버에 저장할 파일명 생성
             $filePath = $file->store('board/',$newName);
         }

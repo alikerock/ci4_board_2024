@@ -7,6 +7,13 @@
   <p>
   <?= $view->content; ?>
   </p>
+  <?php
+    if(isset($view->filename)){
+  ?> 
+    <img src="<?php echo base_url('/uploads/'.$view->filename); ?>" alt="">
+  <?php   
+    }
+  ?>
 </article>
 <hr>
 <div class="controls">
