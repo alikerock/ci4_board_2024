@@ -1,5 +1,7 @@
 <h1>글 상세</h1>
-
+<?php
+  print_r($view);
+?>
 <article>
   <h3><?= $view->subject; ?></h3>
   <p>작성일: <?= $view->regdate; ?> / 작성자: <?= $view->userid; ?></p>
@@ -8,11 +10,14 @@
   <?= $view->content; ?>
   </p>
   <?php
-    if(isset($view->filename)){
+    if(isset($view->fs)){
+      $fsArr = explode(',',$view->fs);
+      foreach($fsArr as $img){      
   ?> 
-    <img src="<?php echo base_url('/uploads/'.$view->filename); ?>" alt="">
+    <img src="<?php echo base_url('/uploads/'.$img); ?>" width="100%" alt="">
   <?php   
     }
+   }
   ?>
 </article>
 <hr>

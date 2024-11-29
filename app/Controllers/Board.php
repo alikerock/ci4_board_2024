@@ -29,7 +29,7 @@ class Board extends BaseController
 
         $data['file_view'] = $fileModel->where('type', 'board')->where('bid', $bid)->first();
         */
-        $data['view'] = $boardModel->select('b.*,f.filename')
+        $data['view'] = $boardModel->select('b.*,group_concat(DISTINCT f.filename) as fs')
                                 ->from('board b')
                                 ->join('file_table f', 'f.bid=b.bid', 'left')
                                 ->where('b.bid',$bid)
