@@ -52,8 +52,7 @@ class Board extends BaseController
  
     }
     public function delete($bid=null)
-    {  
-  
+    {    
         $boardModel = new BoardModel();
         $fileModel = new FileModel();
 
@@ -95,15 +94,21 @@ class Board extends BaseController
             'content'    => $this->request->getVar('content')
         ];
         $bid = $this->request->getVar('bid');
-        $file = $this->request->getFile('upfile');
+        // $file = $this->request->getFile('upfile');
+        $files = $this->request->getFileMultiple('upfile');
+        $filePath = array();
 
         $db = db_connect();
 
-        if($file->getName()) { //첨부파일이 있으면
-            // $filename = $file->getName(); //파일명
-            $newName = $file->getRandomName();//서버에 저장할 파일명 생성
-            $filePath = $file->store('board/',$newName);
+        foreach($files as $file){
+
+            if($file->getName()) { //첨부파일이 있으면
+                // $filename = $file->getName(); //파일명
+                $newName = $file->getRandomName();//서버에 저장할 파일명 생성
+                $filePath[] = $file->store('board/',$newName);
+            }
         }
+
 
         if($bid){ //기존글 수정
             $post = $boardModel->find($bid);
@@ -119,14 +124,18 @@ class Board extends BaseController
             $boardModel->insert($data);
             $insertId = $db->insertID(); //board 테이블에 새글 입력시 자동으로 생성되는 bid
 
-            $fileData = [
-                // 'userid' => 'admin',
-                'bid' => $insertId,
-                'userid' => $_SESSION['userid'],
-                'filename'    => $filePath,
-                'type'    => 'board'
-            ];
-            $fileModel->insert($fileData);
+
+            foreach($filePath as $fp){
+                $fileData = [
+                    // 'userid' => 'admin',
+                    'bid' => $insertId,
+                    'userid' => $_SESSION['userid'],
+                    'filename'    => $fp,
+                    'type'    => 'board'
+                ];
+                $fileModel->insert($fileData);
+            }
+
 
             return $this->response->redirect(site_url('/board'));
         }

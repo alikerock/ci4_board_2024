@@ -15,7 +15,7 @@
   </div>
   <div class="mb-3">
     <label for="formFile" class="form-label">파일 첨부</label>
-    <input class="form-control" type="file" name="upfile" id="formFile">
+    <input class="form-control" type="file" name="upfile[]" multiple id="formFile">
   </div>
   <button class="btn btn-primary">등록</button>
 </form>
