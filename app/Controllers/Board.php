@@ -46,6 +46,20 @@ class Board extends BaseController
         }
  
     }
+    public function delete($bid=null)
+    {  
+  
+        $boardModel = new BoardModel();
+        $post = $boardModel->find($bid);
+
+        if($post && session('userid') == $post->userid){
+            $boardModel->delete($bid);     
+            return redirect()->to('/board');
+        } else{
+            return redirect()->to('/login')->with('alert', '본인글만 삭제할 수 있습니다.');
+        }
+ 
+    }
     public function write()
     {
         if(!isset($_SESSION['userid'])){
