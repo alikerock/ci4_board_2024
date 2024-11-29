@@ -20,7 +20,7 @@ class Board extends BaseController
         $perPage = 10;
         $startLimit = ($page -1) * $perPage;
 
-        $query = $boardModel->select('board.*')
+        $query = $boardModel->select('ci4_board.*')
             ->where('1=1')
             ->orderBy('bid','desc')
             ->limit($perPage, $startLimit)
@@ -56,8 +56,8 @@ class Board extends BaseController
         $data['file_view'] = $fileModel->where('type', 'board')->where('bid', $bid)->first();
         */
         $data['view'] = $boardModel->select('b.*,group_concat(DISTINCT f.filename) as fs')
-                                ->from('board b')
-                                ->join('file_table f', 'f.bid=b.bid', 'left')
+                                ->from('ci4_board b')
+                                ->join('ci4_file_table f', 'f.bid=b.bid', 'left')
                                 ->where('b.bid',$bid)
                                 ->first();
  

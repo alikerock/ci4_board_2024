@@ -19,7 +19,7 @@ class Member extends BaseController
         $userid=$this->request->getVar('userid');
         $passwd=hash('sha512',$this->request->getVar('passwd'));
 
-        $sql="SELECT * FROM members WHERE userid=? AND passwd = ?";
+        $sql="SELECT * FROM ci4_members WHERE userid=? AND passwd = ?";
         $rs = $db->query($sql, [$userid, $passwd]);
         if($rs->getNumRows() > 0) {
             $user = $rs->getRow();

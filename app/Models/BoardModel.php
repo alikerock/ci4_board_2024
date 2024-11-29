@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class BoardModel extends Model
 {
-  protected $table      = 'board';
+  protected $table      = 'ci4_board';
   protected $primaryKey = 'bid';
   protected $useAutoIncrement = true;
   protected $returnType     = 'object';
