@@ -37,7 +37,7 @@ class Board extends BaseController
   
         $boardModel = new BoardModel();
         $post = $boardModel->find($bid);
-        
+
         if($post && session('userid') == $post->userid){
             $data['view'] = $post;
             return render('board_write',$data);        
@@ -56,22 +56,30 @@ class Board extends BaseController
     }
     public function save()
     {
-        /*
-        $db = db_connect();
-        $subject=$this->request->getVar('subject');
-        $content=$this->request->getVar('content');
-
-        $sql="insert into board (userid,subject,content) values ('test','$subject','$content')";
-        $rs = $db->query($sql);        
-        */
         $boardModel = new BoardModel();
 
         $data = [
-            'userid' => 'admin',
+            // 'userid' => 'admin',
+            'userid' => $_SESSION['userid'],
             'subject'    => $this->request->getVar('subject'),
             'content'    => $this->request->getVar('content')
         ];
-        $boardModel->insert($data);
-        return $this->response->redirect(site_url('/board'));
+        $bid = $this->request->getVar('bid');
+
+        if($bid){ //기존글 수정
+            $post = $boardModel->find($bid);
+            if($post && session('userid') == $post->userid){
+                $boardModel->update($bid, $data);
+                return $this->response->redirect(site_url('/boardView/'.$bid));     
+            } else{
+                return redirect()->to('/login')->with('alert', '본인글만 수정할 수 있습니다.');
+            }
+            
+
+        }else{ //새글 입력
+            $boardModel->insert($data);
+            return $this->response->redirect(site_url('/board'));
+        }
+
     } 
 }
