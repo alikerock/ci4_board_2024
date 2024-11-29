@@ -32,6 +32,20 @@ class Board extends BaseController
  
         return render('board_view',$data);        
     }
+    public function modify($bid=null): string
+    {  
+  
+        $boardModel = new BoardModel();
+        $post = $boardModel->find($bid);
+        
+        if($post && session('userid') == $post->userid){
+            $data['view'] = $post;
+            return render('board_write',$data);        
+        } else{
+            return redirect()->to('/login')->with('alert', '본인글만 수정할 수 있습니다.');
+        }
+ 
+    }
     public function write()
     {
         if(!isset($_SESSION['userid'])){
