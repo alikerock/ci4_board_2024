@@ -55,10 +55,20 @@ class Board extends BaseController
     {  
   
         $boardModel = new BoardModel();
+        $fileModel = new FileModel();
+
         $post = $boardModel->find($bid);
 
         if($post && session('userid') == $post->userid){
-            $boardModel->delete($bid);     
+
+            $boardModel->delete($bid);  
+
+            $files = $fileModel->where('type','board')->where('bid',$bid)->findAll();
+            foreach($files as $file){
+                unlink('uploads/'.$file->filename);
+            }     
+            $fileModel->where('type','board')->where('bid',$bid)->delete();        
+
             return redirect()->to('/board');
         } else{
             return redirect()->to('/login')->with('alert', '본인글만 삭제할 수 있습니다.');
