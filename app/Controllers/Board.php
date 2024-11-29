@@ -23,24 +23,24 @@ class Board extends BaseController
         $query = $boardModel->select('board.*')
             ->where('1=1')
             ->orderBy('bid','desc')
-            ->limt($perpage, startLimit)
-            ->findAll($perpage, startLimit);
+            ->limit($perPage, $startLimit)
+            ->findAll($perPage, $startLimit);
 
         $total = $boardModel->countAllResults(); //전체 게시글 수
 
         $pager = service('pager'); //페이지네이션 초기화
 
-        $pager_links = $pager->makeLinks($page, $perPage, $total);
+        $pager_links = $pager->makeLinks($page, $perPage, $total,'my-pagination');
 
         $data = [
-            // ...
+            'list' => $query,
+            'total' => $total,
+            'page'=> $page,
+            'perPage'=>$perPage,
             'pager_links' => $pager_links,
         ];
         //$data['pager_links'] = $pager_links;
-
-
-
-       // $data['list'] = $boardModel->orderBy('bid', 'desc')->findAll();
+        // $data['list'] = $boardModel->orderBy('bid', 'desc')->findAll();
 
         // return view('board_list');
         return render('board_list',$data);        

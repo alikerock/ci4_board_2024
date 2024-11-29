@@ -1,4 +1,10 @@
 <h1>게시판 목록</h1>
+<p>
+    현재 페이지: <?= $page; ?>/<?= $total; ?>
+    | 
+    페이지당 게시물 수: <?= $perPage; ?>
+</p>
+
 <table class="table table-hover">
 <thead>
     <tr>
@@ -23,5 +29,9 @@
     ?>
 </tbody>
 </table>
+<hr>
+<div class="pagination">
+    <?= $pager_links ?>
+</div>
 <a href="/board/write">글쓰기</a>
   
